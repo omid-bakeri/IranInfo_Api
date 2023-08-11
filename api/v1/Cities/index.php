@@ -1,7 +1,12 @@
 <?php
 
+use App\Services\CityServices;
+use App\Utilities\Response;
 
-include_once "../../../app/Services/CityServices.php";
+include '../../../autoloader.php';
 
-$cs = new Services();
-$cs->getCities([]);
+$cs = new CityServices();
+$result  = $cs->getCities([1 ,2 , 3]);
+
+$re = new Response();
+echo Response::ResponseData($result , 200);
