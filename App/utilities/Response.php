@@ -3,8 +3,31 @@
 namespace App\Utilities;
 
 class Response{
-    public static function ResponseData($data , $status_code){
-        return json_encode($data);
+    public static function ResponseData($data , $status_code)
+    {
+//        return json_encode($data);
+
+        # set headers
+        self::setHeaders($status_code);
+        # data prepare
+        $response = [
+            'http_status'=>$status_code,
+            'http_message'=>self::statusTexts[$status_code],
+            'data'=>$data
+        ];
+        # convert to json
+
+        return json_encode($response);
+    }
+    public static function setHeaders($status_code)
+    {
+        header("Access-Control-Allow-Origin: *" );
+        header("Content-Type: application/json; charset=UTF-8 " );
+        header("Access-Control-Allow-Methods: GET,POST,PUT,DELETE,PATCH" );
+        header("Access-Control-Max-Age: 3600" );
+        header("Access-Control-Allow-Headers: Content-Type,Access-Control-Allow-Headers,Authorization,X-Requested-with" );
+        header("HTTP/1.1 $status_code ". self::statusTexts[$status_code]);
+
     }
 
     public const HTTP_CONTINUE = 100;
@@ -139,6 +162,4 @@ class Response{
         510 => 'Not Extended',                                                // RFC2774
         511 => 'Network Authentication Required',                             // RFC6585
     ];
-
-
 }
